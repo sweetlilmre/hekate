@@ -66,4 +66,5 @@ $(BUILD)/%.o: $(SOURCEDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD)/%.o: $(SOURCEDIR)/%.S
+	mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
