@@ -413,7 +413,7 @@ out:;
 	return 1;
 }
 
-void dump_emmc()
+void dump_emmc(int skip_user)
 {
 	gfx_clear(&gfx_ctxt, 0xFF000000);
 	gfx_con_setpos(&gfx_con, 0, 0);
@@ -443,7 +443,7 @@ void dump_emmc()
 
 		//XXX: skip these for now.
 		if (//!strcmp(part->name, "SYSTEM") || 
-			!strcmp(part->name, "USER"))
+			!strcmp(part->name, "USER") && skip_user)
 		{
 			gfx_puts(&gfx_con, "Skipped.\n");
 			continue;
@@ -458,6 +458,16 @@ void dump_emmc()
 out:;
 	sleep(100000);
 	btn_wait();
+}
+
+void dump_emmc_all()
+{
+  dump_emmc(0);
+}
+
+void dump_emmc_nouser()
+{
+  dump_emmc(1);
 }
 
 void launch_firmware()
@@ -571,7 +581,8 @@ menu_t menu_cinfo = {
 
 ment_t ment_tools[] = {
 	MDEF_BACK(),
-	MDEF_HANDLER("Dump eMMC", dump_emmc),
+	MDEF_HANDLER("Dump eMMC (no user)", dump_emmc_nouser),
+	MDEF_HANDLER("Dump eMMC (all)", dump_emmc_all),
 	MDEF_END()
 };
 menu_t menu_tools = {
